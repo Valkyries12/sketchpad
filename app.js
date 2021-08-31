@@ -1,17 +1,60 @@
 const grid = document.querySelector(".grid");
 const gridRange = document.querySelector(".grid-btn");
+const rainbowBtn = document.querySelector("#rainbow-btn");
+const colorBtn = document.querySelector("#color-btn");
+const eraserBtn = document.querySelector("#eraser-btn");
+const clearBtn = document.querySelector("#clear-btn");
+
+
+clearBtn.addEventListener("click", eraseAll);
+
+rainbowBtn.addEventListener("click", function() {
+    changeBtnColor();
+    rainbowBtn.classList.toggle("active");
+});
+
+eraserBtn.addEventListener("click", function() {
+    changeBtnColor();
+    eraserBtn.classList.toggle("active");
+});
+
+colorBtn.addEventListener("click", function() {
+    changeBtnColor();
+    colorBtn.classList.toggle("active");
+})
+
 
 drawSquares();
 
 gridRange.addEventListener("change", function(e) {
     const qty = e.target.value;
-    removeSquare();
+    removeSquares();
     drawSquares(qty);
+    changeText(qty);
 });
-grid.addEventListener("mousemove", paint);
 
-function paint() {
-    console.log("asd")
+grid.addEventListener("mousemove", function(e) { 
+    paint(e);
+    if(rainbowBtn.classList.contains("active")) {
+        paint(e, generateRandomColor());
+    };
+    if(eraserBtn.classList.contains("active")) {
+        paint(e, "#ededed");
+    };
+    if(colorBtn.classList.contains("active")) {
+        const color = document.querySelector(".color-display").value;
+        paint(e, color);
+    }
+});
+
+
+function paint(e, color="black") {
+    e.stopPropagation();
+    const square = e.target;
+    if(!square.classList.contains("grid")) {
+        square.style.backgroundColor = color;
+    };
+    
 }
 
 function drawSquares(qty = 16) {
@@ -31,7 +74,7 @@ function createSquare() {
     grid.appendChild(square);
 }
 
-function removeSquare(qty) {
+function removeSquares() {
     const grid = document.querySelector(".grid");
     if(grid.children.length > 0 ) {
         const squares = grid.children;
@@ -41,3 +84,34 @@ function removeSquare(qty) {
     }
 
 }
+
+function changeText(qty) {
+    const rangeText = document.querySelector(".rangeText");
+    rangeText.textContent = `${qty} x ${qty}`;
+}
+
+function changeBtnColor() {
+    const buttons = document.querySelectorAll(".btn");
+    for(let i = 0; i < buttons.length; i++ ) {
+        if(buttons[i].classList.contains("active")) {
+            buttons[i].classList.remove("active");
+        };
+    };
+}
+
+
+
+function eraseAll() {
+    removeSquares();
+    drawSquares();
+    const range = document.querySelector(".grid-btn");
+    changeText(range.value = 16);
+    
+}
+
+function generateRandomColor() {
+    const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+    return randomColor;
+}
+
+
