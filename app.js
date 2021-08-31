@@ -47,6 +47,20 @@ grid.addEventListener("mousemove", function(e) {
     }
 });
 
+grid.addEventListener("touchmove", function(e) { 
+    paint(e);
+    if(rainbowBtn.classList.contains("active")) {
+        paint(e, generateRandomColor());
+    };
+    if(eraserBtn.classList.contains("active")) {
+        paint(e, "#ededed");
+    };
+    if(colorBtn.classList.contains("active")) {
+        const color = document.querySelector(".color-display").value;
+        paint(e, color);
+    }
+});
+
 
 function paint(e, color="black") {
     e.stopPropagation();
