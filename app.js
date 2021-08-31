@@ -73,6 +73,7 @@ function paint(e, color="black") {
             const elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
             if(elem.parentElement.classList.contains("grid")) {
                 elem.style.backgroundColor = color;
+                e.preventDefault();
             }
             
         }
