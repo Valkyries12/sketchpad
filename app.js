@@ -48,7 +48,6 @@ grid.addEventListener("mousemove", function(e) {
 });
 
 grid.addEventListener("touchmove", function(e) { 
-    console.log(e)
     paint(e);
     if(rainbowBtn.classList.contains("active")) {
         paint(e, generateRandomColor());
@@ -70,7 +69,9 @@ function paint(e, color="black") {
     if(!square.classList.contains("grid")) {
         square.style.backgroundColor = color;
         if(isMobile) {
-            e.touches[0].target.style.backgroundColor = color;
+            const changedTouch = e.changedTouches[0];
+            const elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+            elem.style.backgroundColor = color;
         }
     };
     
