@@ -65,10 +65,9 @@ grid.addEventListener("touchmove", function(e) {
 function paint(e, color="black") {
     e.stopPropagation();
     const square = e.target;
-    const isMobile = navigator.userAgentData.mobile;
     if(!square.classList.contains("grid")) {
         square.style.backgroundColor = color;
-        if(isMobile) {
+        if(isOnMobile()) {
             const changedTouch = e.changedTouches[0];
             const elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
             if(elem.parentElement.classList.contains("grid")) {
@@ -79,6 +78,17 @@ function paint(e, color="black") {
         }
     };
     
+}
+
+function isOnMobile() {
+    const isMozilla = navigator.vendor.indexOf("Google") <= -1;
+    let isMobile;
+    if(isMozilla) {
+        isMobile = navigator.platform.toLowerCase().indexOf("android") > -1;
+    } else {
+        isMobile = navigator.userAgentData.mobile;
+    }
+    return isMobile
 }
 
 function drawSquares(qty = 16) {
